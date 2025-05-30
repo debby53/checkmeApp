@@ -21,3 +21,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/  # Include all files in the assets/ folder
+    # Or specify individual files, e.g.:
+    # - assets/images/icon.png
+    # - assets/images/background.jpg

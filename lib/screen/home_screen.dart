@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import '../providers/todo_provider.dart';
 import '../providers/theme_provider.dart';
-import 'package:checkme/widgets/todo_title.dart';
+import '../widgets/todo_tile.dart';
 import '../widgets/todo_title.dart';
 import 'add_todo_screen.dart';
 
@@ -35,13 +35,29 @@ class HomeScreen extends ConsumerWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
+            child: Column(
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(user!.avatarUrl),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundImage: user!.avatarUrl.isNotEmpty
+                          ? NetworkImage(user.avatarUrl)
+                          : const AssetImage('assets/default_avatar.png') as ImageProvider,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Welcome, ${user.name}!',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                Text('Welcome, ${user.name}!', style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: 10),
+                Image.asset(
+                  'assets/images/banner.png',
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
               ],
             ),
           ),
@@ -60,10 +76,12 @@ class HomeScreen extends ConsumerWidget {
             child: DropdownButton<String>(
               value: selectedCategory,
               isExpanded: true,
-              items: categories.map((category) => DropdownMenuItem(
+              items: categories
+                  .map((category) => DropdownMenuItem(
                 value: category,
                 child: Text(category),
-              )).toList(),
+              ))
+                  .toList(),
               onChanged: (value) => ref.read(selectedCategoryProvider.notifier).state = value!,
             ),
           ),
